@@ -1,35 +1,31 @@
-import json
-
 class Recommender:
-    def __init__(self):
-        self.prices = []
-        self.database = []
     def train(self, prices, database) -> None:
         self.prices = prices
         self.database = database
         return self
 
     def get_recommendations(self, cart: list, max_recommendations: int) -> list:
-        # Create a dictionary to count the occurrences of items in the database
+        # Conteo de las ocurrencias de los productos en las transacciones
         item_counts = {}
         for transaction in self.database:
             for item in transaction:
                 item_counts[item] = item_counts.get(item, 0) + 1
 
-        # Sort items by their occurrences in descending order
+        # Ordenamiento de los productos por ocurrencias en orden descendente
         sorted_items = sorted(item_counts.keys(), key=lambda x: item_counts[x], reverse=True)
 
-        # Filter out items already in the cart and limit the recommendations to max_recommendations
+        # Filtrado de productos ya presentes en el carrito y limitación a `max_recommendations`
         recommendations = [item for item in sorted_items if item not in cart][:max_recommendations]
 
         return recommendations
 
-# Cargar datos desde los archivos JSON
+# Cargar datos desde los archivos directamente como listas de Python
+# Suponiendo que los datos están en "prices.json" y "training_data.json"
 with open('prices.json', 'r') as f:
-    prices = json.load(f)
+    prices = eval(f.read())  # Evaluar el contenido del archivo como una lista de Python
 
 with open('training_data.json', 'r') as f:
-    database = json.load(f)
+    database = eval(f.read())  # Evaluar el contenido del archivo como una lista de Python
 
 # Crear una instancia de la clase Recommender y entrenar el modelo
 recommender = Recommender().train(prices, database)
