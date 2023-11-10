@@ -1,19 +1,18 @@
-import recommender2 
+import recommender
 
-# Cargar datos desde los archivos directamente como listas de Python
-# Suponiendo que los datos están en "prices.json" y "training_data.json"
-with open('prices.json', 'r') as f:
-    prices = eval(f.read())  # Evaluar el contenido del archivo como una lista de Python
+#Lee los datos de aprendizaje
+with open('prices.json') as dataPrices:
+    prices = eval(dataPrices.read())
 
-with open('training_data.json', 'r') as f:
-    database = eval(f.read())  # Evaluar el contenido del archivo como una lista de Python
+with open('training_data.json') as databaseData:
+    database = eval(databaseData.read()) 
 
-# Crear una instancia de la clase Recommender y entrenar el modelo
-recommender = recommender2.Recommender().train(prices, database)
+recommender = recommender.Recommender().train(prices, database)
 
-# Ejemplo de cómo obtener recomendaciones para un carrito de compras y un número máximo de recomendaciones
-cart = [1, 3, 5]  # Ejemplo de elementos en el carrito
-max_recommendations = 3  # Número máximo de recomendaciones
+#Se crea un carrito de ejemplo y un máximo de recomendaciones
+cart = [15,42,1,2,4,6,7,9,9,6,5,3,2,4,5,6,3,5,78,1,2,6,8,4,2]
+
+max_recommendations = 3 
 
 recommendations = recommender.get_recommendations(cart, max_recommendations)
 print('Recomendaciones:', recommendations)
