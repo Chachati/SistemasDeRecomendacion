@@ -10,7 +10,7 @@ class Recommender:
         itemCounts = {}
 
         #Cuando los items del carrito son demasiados (Mayor que el conjunto máximo de datos de entrenamiento) se limita a los tres primeros datos
-        if (len(cart) > 9):
+        if (len(cart) >= 9):
              cart = cart[:3]
 
         #Lee las y suma las transacciones útiles de acuerdo al carrito
@@ -18,6 +18,11 @@ class Recommender:
             for item in transaction:
                 if all(item in transaction for item in cart):
                     itemCounts[item] = itemCounts.get(item, 0) + 1
+                #Aumenta tiempos, buscaba solucionar ausencia de subsets pero no sirve
+                """else:
+                    cart = cart[:2]
+                    if all(item in transaction for item in cart):
+                        itemCounts[item] = itemCounts.get(item, 0) + 1"""
 
         sortedItems = sorted(itemCounts.keys(), key=lambda x: itemCounts[x], reverse=True)
 
